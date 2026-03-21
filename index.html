@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Mashup Dashboard</title>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-left">
+      <div class="logo">⬡ <span>Mashup<em>OS</em></span></div>
+      <span class="header-tag">PHP · XAMPP</span>
+    </div>
+    <nav class="header-nav">
+      <a href="#geo">Geo</a>
+      <a href="#social">Reddit</a>
+      <a href="#shop">Shop</a>
+      <a href="#db">DB</a>
+      <a href="#sms">SMS</a>
+      <a href="#stream">Stream</a>
+    </nav>
+    <div class="server-status">
+      <span class="dot" id="serverDot"></span>
+      <span id="serverLabel">Conectando…</span>
+    </div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-inner">
+      <h1>API Mashup <em>Dashboard</em></h1>
+      <p>6 categorías de APIs · PHP · Apache · XAMPP</p>
+    </div>
+    <div class="hero-stats">
+      <div class="hstat"><span class="hstat-n" id="hs-geo">OSM</span><span class="hstat-l">Geo</span></div>
+      <div class="hstat"><span class="hstat-n" id="hs-soc">Reddit</span><span class="hstat-l">Social</span></div>
+      <div class="hstat"><span class="hstat-n" id="hs-shop">Shop</span><span class="hstat-l">E-Commerce</span></div>
+      <div class="hstat"><span class="hstat-n" id="hs-db">0</span><span class="hstat-l">DB</span></div>
+      <div class="hstat"><span class="hstat-n" id="hs-sms">0</span><span class="hstat-l">SMS</span></div>
+      <div class="hstat"><span class="hstat-n" id="hs-stream">YT</span><span class="hstat-l">Stream</span></div>
+    </div>
+  </section>
+
+  <main class="grid">
+
+    <!-- 1. GEO -->
+    <article class="card c1" id="geo">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">🌍</span>
+          <div><h2>Geolocalización</h2><small>OpenStreetMap · Leaflet · Nominatim</small></div>
+        </div>
+        <span class="sdot" id="geoStatus"></span>
+      </div>
+      <div class="card-body">
+        <div class="controls">
+          <input class="inp" id="geoQuery" type="text" placeholder="Buscar ciudad…" value="Ciudad de México" />
+          <button class="btn btn-c1" id="geoSearch">🔍 Buscar</button>
+          <button class="btn btn-ghost" id="geoLocate">📍 Mi ubicación</button>
+        </div>
+        <div id="map"></div>
+        <div class="geo-info" id="geoInfo">
+          <span><b>Lat:</b> <span id="geoLat">—</span></span>
+          <span><b>Lon:</b> <span id="geoLon">—</span></span>
+          <span><b>Lugar:</b> <span id="geoPlace">—</span></span>
+          <span><b>País:</b> <span id="geoCountry">—</span></span>
+        </div>
+        <div id="geoResults" class="geo-results"></div>
+      </div>
+    </article>
+
+    <!-- 2. REDDIT -->
+    <article class="card c2" id="social">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">🤖</span>
+          <div><h2>Reddit</h2><small>API Pública · Posts en Tiempo Real</small></div>
+        </div>
+        <span class="sdot" id="socialStatus"></span>
+      </div>
+      <div class="card-body reddit-layout">
+        <div class="reddit-sidebar">
+          <input class="inp inp-sm" id="subSearch" type="text" placeholder="🔍 Buscar…" />
+          <div id="subList"></div>
+        </div>
+        <div class="reddit-main">
+          <div class="sub-info-bar">
+            <div class="sub-accent" id="subAccent"></div>
+            <img id="subIcon" src="" alt="" style="display:none;width:28px;height:28px;border-radius:50%;object-fit:cover" />
+            <div>
+              <div class="sub-title" id="subTitle">r/mexico</div>
+              <div class="sub-desc" id="subDesc"></div>
+            </div>
+            <div class="sub-stats">
+              <span id="subMembers">—</span>
+              <span id="subOnline">—</span>
+            </div>
+          </div>
+          <div class="sort-row">
+            <div class="sort-btns">
+              <button class="sort-btn active" data-sort="hot">🔥 Hot</button>
+              <button class="sort-btn" data-sort="new">✨ New</button>
+              <button class="sort-btn" data-sort="top">👑 Top</button>
+              <button class="sort-btn" data-sort="rising">📈 Rising</button>
+            </div>
+            <button class="btn btn-c2 btn-sm" id="redditRefresh">↻</button>
+          </div>
+          <div id="redditFeed" class="reddit-feed"><div class="loading">Cargando…</div></div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 3. SHOP -->
+    <article class="card c3" id="shop">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">🛒</span>
+          <div><h2>E-Commerce</h2><small>FakeStore API · Catálogo Real</small></div>
+        </div>
+        <span class="sdot" id="shopStatus"></span>
+      </div>
+      <div class="card-body">
+        <div class="controls">
+          <input class="inp" id="shopQuery" type="text" placeholder="Buscar producto…" />
+          <select class="inp inp-sm" id="shopCat"><option value="">Todas las categorías</option></select>
+          <button class="btn btn-c3" id="shopSearch">🔍 Buscar</button>
+        </div>
+        <div id="productsGrid" class="products-grid"><div class="loading">Cargando…</div></div>
+        <div id="productModal" class="modal hidden">
+          <div class="modal-inner">
+            <button id="modalClose" class="modal-close">✕</button>
+            <img id="modalImg" src="" alt="" />
+            <div class="modal-info">
+              <small id="modalCat"></small>
+              <h3 id="modalName"></h3>
+              <p id="modalDesc"></p>
+              <div class="modal-footer">
+                <span class="modal-price" id="modalPrice"></span>
+                <span id="modalStars"></span>
+              </div>
+              <button class="btn btn-c3 btn-full" id="modalCart">🛒 Agregar al carrito</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- 4. DB -->
+    <article class="card c4" id="db">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">🗄️</span>
+          <div><h2>Base de Datos</h2><small>PHP · JSON Storage · REST API</small></div>
+        </div>
+        <span class="sdot" id="dbStatus"></span>
+      </div>
+      <div class="card-body">
+        <form id="dbForm" onsubmit="return false">
+          <div class="controls">
+            <input class="inp" id="dbUser" type="text" placeholder="Username" required />
+            <input class="inp" id="dbEmail" type="email" placeholder="Email" required />
+          </div>
+          <div class="controls">
+            <select class="inp" id="dbRole">
+              <option value="user">👤 User</option>
+              <option value="admin">🛡 Admin</option>
+              <option value="editor">✏️ Editor</option>
+              <option value="viewer">👁 Viewer</option>
+            </select>
+            <button class="btn btn-c4" type="submit" id="dbSubmit">＋ Registrar</button>
+          </div>
+        </form>
+        <div class="table-wrap">
+          <table class="db-table">
+            <thead><tr><th>ID</th><th>Usuario</th><th>Email</th><th>Rol</th><th>Fecha</th><th></th></tr></thead>
+            <tbody id="dbBody"></tbody>
+          </table>
+          <div id="dbEmpty" class="empty-msg">No hay registros aún</div>
+        </div>
+        <div class="db-log" id="dbLog"><span style="color:var(--text3)">// Esperando operaciones…</span></div>
+      </div>
+    </article>
+
+    <!-- 5. SMS -->
+    <article class="card c5" id="sms">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">💬</span>
+          <div><h2>Mensajería</h2><small>SMS · WhatsApp · Email · Push</small></div>
+        </div>
+        <span class="sdot" id="smsStatus"></span>
+      </div>
+      <div class="card-body">
+        <div class="ch-selector">
+          <button class="ch-btn active" data-ch="SMS">📱 SMS</button>
+          <button class="ch-btn" data-ch="WhatsApp">💚 WhatsApp</button>
+          <button class="ch-btn" data-ch="Email">📧 Email</button>
+          <button class="ch-btn" data-ch="Push">🔔 Push</button>
+        </div>
+        <form id="smsForm" onsubmit="return false">
+          <input class="inp" id="smsTo" type="text" placeholder="+52 555 000 0000" />
+          <textarea class="inp" id="smsMsg" rows="3" placeholder="Escribe tu mensaje…"></textarea>
+          <div style="display:flex;justify-content:space-between;align-items:center">
+            <span id="smsCount" style="font-size:.7rem;color:var(--text3)">0/160</span>
+            <button class="btn btn-c5" id="smsSend">⚡ Enviar</button>
+          </div>
+        </form>
+        <div style="font-size:.65rem;color:var(--text3);margin-top:.25rem;font-family:var(--font-mono)">HISTORIAL</div>
+        <div id="smsList" class="sms-list"></div>
+      </div>
+    </article>
+
+    <!-- 6. STREAM -->
+    <article class="card c6 card-full" id="stream">
+      <div class="card-header">
+        <div class="card-ht">
+          <span class="card-icon">▶</span>
+          <div><h2>Streaming</h2><small>YouTube iFrame API · Reproductor</small></div>
+        </div>
+        <span class="sdot" id="streamStatus"></span>
+      </div>
+      <div class="card-body">
+        <div class="stream-layout">
+          <div class="stream-player">
+            <div id="ytWrap" class="yt-wrap">
+              <div id="ytPlayer"></div>
+            </div>
+            <div class="player-bar">
+              <div>
+                <div class="pc-title" id="pcTitle">Selecciona un video</div>
+                <div class="pc-ch" id="pcChannel">—</div>
+              </div>
+              <div class="pc-btns">
+                <button class="pcb" id="pcPlay">▶</button>
+                <button class="pcb" id="pcPause">⏸</button>
+                <button class="pcb" id="pcStop">⏹</button>
+                <input type="range" id="volSlider" min="0" max="100" value="70" class="vol-slider" />
+                <span id="volLabel" style="font-size:.65rem;color:var(--text3);font-family:var(--font-mono)">🔊 70</span>
+              </div>
+            </div>
+          </div>
+          <div class="stream-list">
+            <div class="controls">
+              <input class="inp" id="streamQ" type="text" placeholder="Buscar…" />
+              <button class="btn btn-c6" id="streamSearch">🔍</button>
+            </div>
+            <div id="playlist" class="playlist"></div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+  </main>
+
+  <footer class="footer">
+    <span>API Mashup Dashboard — PHP · Apache · XAMPP</span>
+    <span>OSM · Reddit · FakeStore · YouTube</span>
+  </footer>
+
+  <!-- Leaflet -->
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <!-- YouTube IFrame API -->
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <!-- Módulos PHP -->
+  <script src="js/geo.js"></script>
+  <script src="js/social.js"></script>
+  <script src="js/shop.js"></script>
+  <script src="js/db.js"></script>
+  <script src="js/sms.js"></script>
+  <script src="js/stream.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
