@@ -49,7 +49,7 @@ window.setStat = function (id, val) {
   const dot   = document.getElementById('serverDot');
   const label = document.getElementById('serverLabel');
   try {
-    const d = await api.get('db/users');
+    const d = await api.get('ping');
     if (d.ok) { dot.className = 'dot ok'; label.textContent = 'PHP · Online'; }
     else throw new Error();
   } catch {

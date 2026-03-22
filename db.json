@@ -1,1 +1,39 @@
-{"users":[],"messages":[],"log":[]}
+{
+    "users": [],
+    "messages": [
+        {
+            "to": "844 353 5454",
+            "message": "123",
+            "channel": "Push",
+            "status": "delivered",
+            "messageId": "MSG-B1A5EFA3",
+            "provider": "Twilio\/SMS",
+            "_id": "eb32f1f6",
+            "createdAt": "2026-03-22T08:07:12+01:00"
+        },
+        {
+            "to": "844 353 5454",
+            "message": "hola",
+            "channel": "WhatsApp",
+            "status": "delivered",
+            "messageId": "MSG-CBD2384B",
+            "provider": "Twilio\/WhatsApp",
+            "_id": "7dfbb18c",
+            "createdAt": "2026-03-22T08:07:20+01:00"
+        }
+    ],
+    "log": [
+        {
+            "action": "INSERT",
+            "collection": "messages",
+            "_id": "eb32f1f6",
+            "ts": "2026-03-22T08:07:12+01:00"
+        },
+        {
+            "action": "INSERT",
+            "collection": "messages",
+            "_id": "7dfbb18c",
+            "ts": "2026-03-22T08:07:20+01:00"
+        }
+    ]
+}

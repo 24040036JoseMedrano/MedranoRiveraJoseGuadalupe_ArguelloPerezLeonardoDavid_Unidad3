@@ -1,4 +1,4 @@
-/* sms.php — Mensajería */
+
 (function () {
   const dot = document.getElementById('smsStatus');
   let ch = 'SMS', sent = 0;

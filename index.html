@@ -6,7 +6,7 @@
   <title>API Mashup Dashboard</title>
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;700;800&family=Space+Mono:wght@400;700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
 
@@ -218,7 +218,7 @@
       <div class="card-header">
         <div class="card-ht">
           <span class="card-icon">▶</span>
-          <div><h2>Streaming</h2><small>YouTube iFrame API · Reproductor</small></div>
+          <div><h2>Streaming</h2><small>Spotify Embed · Playlists</small></div>
         </div>
         <span class="sdot" id="streamStatus"></span>
       </div>
@@ -262,15 +262,19 @@
 
   <!-- Leaflet -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <!-- YouTube IFrame API -->
-  <script src="https://www.youtube.com/iframe_api"></script>
-  <!-- Módulos PHP -->
-  <script src="js/geo.js"></script>
-  <script src="js/social.js"></script>
-  <script src="js/shop.js"></script>
-  <script src="js/db.js"></script>
-  <script src="js/sms.js"></script>
-  <script src="js/stream.js"></script>
-  <script src="js/app.js"></script>
+  <!-- Firebase SDK (compat) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-firestore-compat.js"></script>
+  <!-- Utilidades compartidas (debe cargar primero) -->
+  <script src="app.js"></script>
+  <!-- Configuración Firebase -->
+  <script src="firebase-config.js"></script>
+  <!-- Módulos -->
+  <script src="geo.js"></script>
+  <script src="social.js"></script>
+  <script src="shop.js"></script>
+  <script src="db.js"></script>
+  <script src="sms.js"></script>
+  <script src="stream.js"></script>
 </body>
 </html>

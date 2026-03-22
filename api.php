@@ -259,4 +259,11 @@ if ($route === 'stream/search') {
     ok(['results' => count($r) ? $r : array_slice($cat,0,4)]);
 }
 
+// ══════════════════════════════════════════════════════════
+// PING — Health check
+// ══════════════════════════════════════════════════════════
+if ($route === 'ping') {
+    ok(['status' => 'online', 'time' => date('c')]);
+}
+
 fail('Ruta no encontrada', 404);
