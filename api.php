@@ -1,8 +1,5 @@
 <?php
-/**
- * api.php — Backend completo del Mashup Dashboard
- * Llamar con: api.php?route=geo/search&q=mexico
- */
+
 
 header('Content-Type: application/json; charset=utf-8');
 header('Access-Control-Allow-Origin: *');
@@ -11,7 +8,7 @@ header('Access-Control-Allow-Headers: Content-Type');
 
 if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') { http_response_code(204); exit; }
 
-// ── Helpers ───────────────────────────────────────────────
+// Helpers
 function ok($data) {
     echo json_encode(array_merge(['ok' => true], $data), JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
     exit;
@@ -39,7 +36,7 @@ function get_url($url, $browser = false) {
 }
 function body() { return json_decode(file_get_contents('php://input'), true) ?? []; }
 
-// ── Base de datos JSON ────────────────────────────────────
+// Base de datos JSON 
 define('DB_FILE', __DIR__ . '/db.json');
 function db_load() {
     if (!file_exists(DB_FILE)) file_put_contents(DB_FILE, '{"users":[],"messages":[],"log":[]}');
@@ -55,13 +52,11 @@ function db_insert($col, $rec) {
     return $rec;
 }
 
-// ── Router ────────────────────────────────────────────────
+// Router 
 $route  = $_GET['route'] ?? '';
 $method = strtoupper($_SERVER['REQUEST_METHOD']);
 
-// ══════════════════════════════════════════════════════════
 // 1. GEOLOCALIZACIÓN — OpenStreetMap Nominatim
-// ══════════════════════════════════════════════════════════
 if ($route === 'geo/search') {
     $q = $_GET['q'] ?? 'Mexico City';
     $d = get_url('https://nominatim.openstreetmap.org/search?q='.urlencode($q).'&format=json&limit=5&addressdetails=1');
@@ -72,9 +67,7 @@ if ($route === 'geo/reverse') {
     ok(['result' => $d]);
 }
 
-// ══════════════════════════════════════════════════════════
 // 2. REDDIT — API Pública
-// ══════════════════════════════════════════════════════════
 if ($route === 'reddit/subreddits') {
     ok(['subreddits' => [
         ['name'=>'mexico',       'icon'=>'🇲🇽','color'=>'#ef4444','desc'=>'Todo sobre México'],
@@ -159,9 +152,9 @@ if ($route === 'reddit/search') {
     ok(['results' => $results]);
 }
 
-// ══════════════════════════════════════════════════════════
+
 // 3. E-COMMERCE — FakeStore API (sin CORS issues)
-// ══════════════════════════════════════════════════════════
+
 if ($route === 'shop/products') {
     $q    = strtolower($_GET['q'] ?? '');
     $cat  = $_GET['category'] ?? '';
@@ -178,9 +171,9 @@ if ($route === 'shop/categories') {
     ok(['categories' => $cats]);
 }
 
-// ══════════════════════════════════════════════════════════
+
 // 4. BASE DE DATOS — JSON File
-// ══════════════════════════════════════════════════════════
+
 if ($route === 'db/users' && $method === 'GET') {
     $db = db_load();
     ok(['users' => $db['users'], 'total' => count($db['users'])]);
@@ -214,9 +207,9 @@ if ($route === 'db/log') {
     ok(['log' => array_reverse(array_slice($db['log'], -20))]);
 }
 
-// ══════════════════════════════════════════════════════════
+
 // 5. MENSAJERÍA — Simulación
-// ══════════════════════════════════════════════════════════
+
 if ($route === 'sms/send' && $method === 'POST') {
     $b = body();
     if (empty($b['to']) || empty($b['message'])) fail('to y message requeridos');
@@ -240,9 +233,9 @@ if ($route === 'sms/history') {
     ok(['messages' => array_reverse(array_slice($db['messages'], -15))]);
 }
 
-// ══════════════════════════════════════════════════════════
+
 // 6. STREAMING — Catálogo YouTube
-// ══════════════════════════════════════════════════════════
+
 if ($route === 'stream/search') {
     $q = strtolower($_GET['q'] ?? 'lofi');
     $cat = [
@@ -259,9 +252,9 @@ if ($route === 'stream/search') {
     ok(['results' => count($r) ? $r : array_slice($cat,0,4)]);
 }
 
-// ══════════════════════════════════════════════════════════
+
 // PING — Health check
-// ══════════════════════════════════════════════════════════
+
 if ($route === 'ping') {
     ok(['status' => 'online', 'time' => date('c')]);
 }

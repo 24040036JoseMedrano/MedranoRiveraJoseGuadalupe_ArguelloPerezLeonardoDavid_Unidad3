@@ -1,4 +1,4 @@
-/* app.php — Utilidades compartidas */
+
 
 const API = 'api.php?route=';
 

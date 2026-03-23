@@ -1,4 +1,4 @@
-/* shop.php — iTunes Search API (Apple) — real, sin CORS */
+
 (function () {
   const dot = document.getElementById('shopStatus');
 
@@ -114,7 +114,8 @@
 
   loadCats(); search();
 })();
-/* shop.php — iTunes Search API (Apple) — real, sin CORS */
+
+
 (function () {
   const dot = document.getElementById('shopStatus');
 

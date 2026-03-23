@@ -1,4 +1,4 @@
-/* social.php — Reddit */
+
 (function () {
   const dot = document.getElementById('socialStatus');
   let sub = 'mexico', sort = 'hot';

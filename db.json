@@ -20,6 +20,26 @@
             "provider": "Twilio\/WhatsApp",
             "_id": "7dfbb18c",
             "createdAt": "2026-03-22T08:07:20+01:00"
+        },
+        {
+            "to": "844 353 5454",
+            "message": "keloke manito",
+            "channel": "SMS",
+            "status": "delivered",
+            "messageId": "MSG-297B5A28",
+            "provider": "Twilio\/SMS",
+            "_id": "02a7d139",
+            "createdAt": "2026-03-23T02:18:59+01:00"
+        },
+        {
+            "to": "844 353 5454",
+            "message": "Hola!",
+            "channel": "WhatsApp",
+            "status": "delivered",
+            "messageId": "MSG-54AF7186",
+            "provider": "Twilio\/WhatsApp",
+            "_id": "e680d515",
+            "createdAt": "2026-03-23T02:46:48+01:00"
         }
     ],
     "log": [
@@ -34,6 +54,18 @@
             "collection": "messages",
             "_id": "7dfbb18c",
             "ts": "2026-03-22T08:07:20+01:00"
+        },
+        {
+            "action": "INSERT",
+            "collection": "messages",
+            "_id": "02a7d139",
+            "ts": "2026-03-23T02:18:59+01:00"
+        },
+        {
+            "action": "INSERT",
+            "collection": "messages",
+            "_id": "e680d515",
+            "ts": "2026-03-23T02:46:48+01:00"
         }
     ]
 }

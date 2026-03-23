@@ -1,4 +1,4 @@
-/* geo.php — Geolocalización */
+
 (function () {
   let map, marker;
   const dot = document.getElementById('geoStatus');
