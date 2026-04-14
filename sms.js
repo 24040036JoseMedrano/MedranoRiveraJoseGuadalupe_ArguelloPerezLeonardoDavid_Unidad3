@@ -16,15 +16,6 @@
   const msg=document.getElementById('smsMsg');
   msg.oninput=()=>{ document.getElementById('smsCount').textContent=msg.value.length+'/'+(ch==='SMS'?160:4096); };
 
-  async function loadHistory() {
-    try {
-      const d = await api.get('sms/history');
-      if (!d.ok) return;
-      const list=document.getElementById('smsList'); list.innerHTML='';
-      d.messages.forEach(m=>addBubble(m,false));
-    } catch(e) { /* sin historial previo */ }
-  }
-
   function addBubble(m, pre=true) {
     const list=document.getElementById('smsList');
     const div=document.createElement('div');
@@ -49,19 +40,18 @@
     const btn=document.getElementById('smsSend');
     btn.disabled=true; btn.textContent='⏳ Enviando…';
     dot.className='sdot loading';
-    await new Promise(r=>setTimeout(r,800+Math.random()*500));
-    // Simulacion local: no depende del servidor PHP
-    addBubble({to, message, channel:ch, status:'delivered', createdAt: new Date().toISOString()}, true);
-    toast('✅ '+ch+' enviado a '+to,'ok');
-    document.getElementById('smsMsg').value='';
-    document.getElementById('smsCount').textContent='0/160';
-    sent++; setStat('hs-sms',sent);
-    dot.className='sdot active';
-    btn.disabled=false; btn.textContent='⚡ Enviar';
-    // Intentar guardar en servidor (no bloqueante)
-    api.post('sms/send',{to,message,channel:ch}).catch(()=>{});
+    try {
+      await new Promise(r=>setTimeout(r,800+Math.random()*500));
+      addBubble({to, message, channel:ch, status:'delivered', createdAt:new Date().toISOString()}, true);
+      toast('✅ '+ch+' enviado a '+to,'ok');
+      document.getElementById('smsMsg').value='';
+      document.getElementById('smsCount').textContent='0/160';
+      sent++; setStat('hs-sms',sent);
+      dot.className='sdot active';
+    } finally {
+      btn.disabled=false; btn.textContent='⚡ Enviar';
+    }
   };
 
-  loadHistory();
   dot.className='sdot active';
 })();
