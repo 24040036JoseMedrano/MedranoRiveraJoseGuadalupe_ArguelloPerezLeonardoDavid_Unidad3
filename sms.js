@@ -39,7 +39,8 @@
     while(list.children.length>10) list.lastChild.remove();
   }
 
-  document.getElementById('smsForm').onsubmit = async () => {
+  document.getElementById('smsForm').onsubmit = async (e) => {
+    e.preventDefault();
     const to=document.getElementById('smsTo').value.trim();
     const message=document.getElementById('smsMsg').value.trim();
     if (!to||!message) return toast('Completa destinatario y mensaje','err');
